@@ -1,334 +1,196 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TPP | Dashboard de Presupuestos & Seguridad</title>
-
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
-
-<style>
-  :root {
-    --naranja-tpp: #f7941d;
-    --negro: #111;
-    --blanco: #fff;
-    --gris-oscuro: #222;
-    --shadow: rgba(0, 0, 0, 0.35);
-    --glow: #ffa726;
-  }
-
-  /* RESET & GLOBAL */
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  body, html {
-    margin: 0; padding: 0;
-    height: 100%;
-    font-family: 'Open Sans', sans-serif;
-    background: linear-gradient(135deg, #f7941d 0%, #f95f2a 100%);
-    overflow: hidden;
-    color: var(--blanco);
-  }
-
-  /* BACKGROUND ANIMADO SUAVE */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(45deg, #f7941d, #e65c00, #f7941d);
-    background-size: 600% 600%;
-    animation: bgAnimation 20s ease infinite;
-    z-index: -1;
-  }
-  @keyframes bgAnimation {
-    0% {background-position:0% 50%;}
-    50% {background-position:100% 50%;}
-    100% {background-position:0% 50%;}
-  }
-
-  /* CONTENEDOR PRINCIPAL DE BIENVENIDA */
-  #welcome {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    text-align: center;
-    animation: fadeIn 2s ease forwards;
-    position: relative;
-  }
-
-  /* LOGO */
-  #welcome img.logo {
-    width: 280px;
-    margin-bottom: 20px;
-    animation: pulse 3s ease-in-out infinite;
-    filter: drop-shadow(0 0 10px var(--glow));
-  }
-
-  /* TITULO GRANDE */
-  #welcome h1 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    font-size: 3rem;
-    text-shadow:
-      0 0 10px var(--glow),
-      0 0 20px var(--glow),
-      0 0 30px var(--glow);
-    margin-bottom: 10px;
-    letter-spacing: 3px;
-    animation: glowText 3s ease-in-out infinite alternate;
-  }
-
-  /* SUBTITULO */
-  #welcome h2 {
-    font-weight: 400;
-    font-size: 1.2rem;
-    margin-bottom: 40px;
-    color: #ffe0b2cc;
-  }
-
-  /* BOTÓN NEÓN */
-  button#enter-btn {
-    padding: 18px 55px;
-    font-size: 1.4rem;
-    font-weight: 700;
-    font-family: 'Montserrat', sans-serif;
-    background: transparent;
-    border: 3px solid var(--blanco);
-    border-radius: 50px;
-    color: var(--blanco);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: color 0.4s ease;
-    text-transform: uppercase;
-    box-shadow:
-      0 0 5px var(--blanco),
-      0 0 20px var(--blanco),
-      0 0 30px var(--naranja-tpp);
-  }
-  button#enter-btn::before {
-    content: '';
-    position: absolute;
-    left: -50%;
-    top: 0;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, var(--blanco), transparent);
-    transform: skewX(-25deg);
-    transition: left 0.7s ease;
-    z-index: -1;
-  }
-  button#enter-btn:hover {
-    color: var(--naranja-tpp);
-    box-shadow:
-      0 0 15px var(--naranja-tpp),
-      0 0 40px var(--naranja-tpp),
-      0 0 50px var(--naranja-tpp);
-  }
-  button#enter-btn:hover::before {
-    left: 100%;
-  }
-
-  /* CONTENEDOR DE ICONOS */
-  .icons-row {
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    margin-top: 50px;
-    flex-wrap: wrap;
-  }
-  .icon-box {
-    background: rgba(255 255 255 / 0.15);
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 160px;
-    box-shadow: 0 0 25px 5px rgba(255 255 255 / 0.1);
-    transition: transform 0.3s ease;
-    cursor: default;
-  }
-  .icon-box:hover {
-    transform: translateY(-15px) scale(1.05);
-    box-shadow: 0 0 35px 10px var(--blanco);
-  }
-  .icon-box img {
-    width: 80px;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 0 5px var(--blanco));
-  }
-  .icon-box p {
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: var(--blanco);
-  }
-
-  /* GIF loader profesional */
-  #loader {
-    width: 80px;
-    height: 80px;
-    background: url('data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMbGxv7+/gAAAMLCwri4uHd3d6ioqGZmZjY2NnZ2aWlpU9PTyH5BAAAAAAALAAAAAAQABAAAAM5CLrc/jDKSau9OOvNu/9gKI5kaZ5oqq5s68Lh8XACIpNIJgAgwEqxchEyBQKPx6RQaBgNqj0fiAAAOw==') no-repeat center center;
-    background-size: contain;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -40px;
-    margin-left: -40px;
-    z-index: 9999;
-    display: none;
-  }
-
-  /* CONTENEDOR DEL INFORME POWER BI */
-  #report-container {
-    display: none;
-    width: 100%;
-    height: 100vh;
-    animation: fadeInReport 2s ease forwards;
-  }
-  #report-container iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-
-  /* ANIMACIONES */
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-  @keyframes glowText {
-    0% {
-      text-shadow:
-        0 0 5px var(--glow),
-        0 0 10px var(--glow),
-        0 0 20px var(--glow);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TPP | Dashboard de Presupuestos & Seguridad</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Open Sans"', 'sans-serif'],
+            display: ['"Montserrat"', 'sans-serif']
+          },
+          colors: {
+            tpp: '#f7941d',
+            tppDark: '#f95f2a'
+          },
+          keyframes: {
+            glowText: {
+              '0%': { textShadow: '0 0 10px rgba(255,167,38,.7)' },
+              '50%': { textShadow: '0 0 25px rgba(255,167,38,.9)' },
+              '100%': { textShadow: '0 0 15px rgba(255,167,38,.7)' }
+            },
+            softPulse: {
+              '0%, 100%': { transform: 'scale(1)' },
+              '50%': { transform: 'scale(1.04)' }
+            }
+          },
+          animation: {
+            glow: 'glowText 4s ease-in-out infinite',
+            softPulse: 'softPulse 5s ease-in-out infinite'
+          }
+        }
+      }
     }
-    100% {
-      text-shadow:
-        0 0 20px var(--glow),
-        0 0 35px var(--glow),
-        0 0 40px var(--glow);
+  </script>
+  <style>
+    ::selection {
+      background: #fff;
+      color: #f05a1f;
     }
-  }
-  @keyframes fadeIn {
-    from {opacity: 0; transform: scale(0.9);}
-    to {opacity: 1; transform: scale(1);}
-  }
-  @keyframes fadeOut {
-    from {opacity: 1;}
-    to {opacity: 0; transform: scale(0.95);}
-  }
-  @keyframes fadeInReport {
-    from {opacity: 0; transform: translateY(30px);}
-    to {opacity: 1; transform: translateY(0);}
-  }
 
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    .icons-row {
-      gap: 25px;
+    #welcome {
+      animation: fadeIn 2s ease forwards;
     }
-    .icon-box {
-      max-width: 120px;
-      padding: 25px;
+
+    #report-container {
+      display: none;
+      width: 100%;
+      height: 100vh;
+      animation: fadeInReport 2s ease forwards;
     }
-    .icon-box img {
-      width: 60px;
-      margin-bottom: 12px;
+
+    #report-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
-    #welcome h1 {
-      font-size: 2.3rem;
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
-    #welcome h2 {
-      font-size: 1rem;
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+        transform: scale(0.95);
+      }
     }
-    button#enter-btn {
-      font-size: 1.1rem;
-      padding: 14px 40px;
+
+    @keyframes fadeInReport {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-  }
-  @media (max-width: 480px) {
-    .icons-row {
-      flex-direction: column;
-      gap: 20px;
-    }
-    .icon-box {
-      max-width: 100%;
-      padding: 20px;
-    }
-  }
-</style>
+  </style>
 </head>
-<body>
 
-  <!-- Loader -->
-  <div id="loader" role="alert" aria-live="assertive" aria-label="Cargando informe"></div>
+<body class="relative min-h-screen overflow-hidden bg-gradient-to-br from-tpp to-tppDark text-white font-sans">
+  <div class="pointer-events-none absolute inset-0 -z-10">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.2),_transparent_65%)]"></div>
+    <div class="absolute -top-40 -left-24 h-[22rem] w-[22rem] rounded-full bg-white/20 blur-[120px]"></div>
+    <div class="absolute bottom-0 right-0 h-[28rem] w-[28rem] rounded-full bg-white/10 blur-[150px]"></div>
+  </div>
 
-  <!-- Pantalla de bienvenida -->
-  <section id="welcome" role="main">
-    <img src="https://operatividad.tpp.com.pe/servicios/assetsBP/images/TPP-Logo-Oficial-transparente.png" alt="TPP Logo" class="logo" />
-    <h1>Presupuestos y Seguridad</h1>
-    <h2>Análisis de gastos, actividades, actos y Condiciones</h2>
-
-    <button id="enter-btn" aria-label="Ingresar al informe" title="Ingresar al informe">Ingresar al Informe</button>
-
-    <div class="icons-row" aria-label="Iconos temáticos de informes">
-      <div class="icon-box" title="Presupuestos y Gastos">
-        <img src="https://img.icons8.com/ios-filled/100/ffffff/money-bag.png" alt="Icono dinero y presupuestos" />
-        <p>Presupuestos & Gastos</p>
+  <div id="loader" role="alert" aria-live="assertive" aria-label="Cargando informe"
+    class="fixed inset-0 z-20 hidden place-items-center bg-slate-950/80 px-6 text-center">
+    <div class="flex flex-col items-center gap-4">
+      <div class="relative h-20 w-20">
+        <span class="absolute inset-0 rounded-full border-4 border-white/20"></span>
+        <span class="absolute inset-0 rounded-full border-4 border-transparent border-t-white animate-spin"></span>
       </div>
-      <div class="icon-box" title="Incidencias de Seguridad">
-        <img src="https://img.icons8.com/ios-filled/100/ffffff/security-checked.png" alt="Icono seguridad" />
-        <p>Incidencias de Seguridad</p>
+      <p class="font-display text-2xl">Cargando informe</p>
+      <p class="text-sm text-white/70">Conectando con Power BI...</p>
+    </div>
+  </div>
+
+  <section id="welcome" role="main"
+    class="relative z-10 flex min-h-screen flex-col items-center justify-center gap-8 px-6 text-center">
+    <img src="https://operatividad.tpp.com.pe/servicios/assetsBP/images/TPP-Logo-Oficial-transparente.png"
+      alt="TPP Logo" class="h-32 w-auto animate-softPulse" />
+    <div class="space-y-3">
+      <p class="text-sm uppercase tracking-[0.4em] text-white/70">Power BI</p>
+      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl animate-glow">Presupuestos y Seguridad</h1>
+      <h2 class="text-base text-white/80 sm:text-lg">An&aacute;lisis de gastos, actividades, actos y condiciones</h2>
+    </div>
+
+    <button id="enter-btn" aria-label="Ingresar al informe" title="Ingresar al informe"
+      class="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-white/60 px-12 py-4 font-display text-lg uppercase tracking-wide text-white transition hover:scale-[1.02]">
+      <span class="absolute inset-0 bg-white/15 transition group-hover:bg-white/25"></span>
+      <span class="relative">Ingresar al Informe</span>
+      <svg class="relative ml-3 h-5 w-5 transition group-hover:translate-x-1" fill="none" stroke="currentColor"
+        stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+      </svg>
+    </button>
+
+    <div class="icons-row mt-4 flex flex-wrap justify-center gap-4 sm:gap-6">
+      <div class="max-w-[160px] rounded-3xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur">
+        <img src="https://img.icons8.com/ios-filled/100/ffffff/money-bag.png" alt="Icono dinero y presupuestos"
+          class="mx-auto mb-3 h-12 w-12" />
+        <p class="text-sm font-semibold leading-tight">Presupuestos &amp; Gastos</p>
       </div>
-      <div class="icon-box" title="Condiciones de Instalaciones">
-        <img src="https://img.icons8.com/ios-filled/100/ffffff/factory.png" alt="Icono fábrica y condiciones" />
-        <p>Condiciones en Instalaciones</p>
+      <div class="max-w-[160px] rounded-3xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur">
+        <img src="https://img.icons8.com/ios-filled/100/ffffff/security-checked.png" alt="Icono seguridad"
+          class="mx-auto mb-3 h-12 w-12" />
+        <p class="text-sm font-semibold leading-tight">Incidencias de Seguridad</p>
       </div>
-      <div class="icon-box" title="Robos y Contenedores">
-        <img src="https://img.icons8.com/ios-filled/100/ffffff/security-checked.png" alt="Icono robo" />
-        <p>Robos e Intentos de robos</p>
+      <div class="max-w-[160px] rounded-3xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur">
+        <img src="https://img.icons8.com/ios-filled/100/ffffff/factory.png" alt="Icono f&aacute;brica y condiciones"
+          class="mx-auto mb-3 h-12 w-12" />
+        <p class="text-sm font-semibold leading-tight">Condiciones en Instalaciones</p>
+      </div>
+      <div class="max-w-[160px] rounded-3xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur">
+        <img src="https://img.icons8.com/ios-filled/100/ffffff/security-checked.png" alt="Icono robo"
+          class="mx-auto mb-3 h-12 w-12" />
+        <p class="text-sm font-semibold leading-tight">Robos e Intentos de robos</p>
       </div>
     </div>
   </section>
 
   <!-- Informe Power BI -->
   <section id="report-container" aria-label="Informe Power BI">
-    <iframe
-      title="PB FIJO"
+    <iframe title="PB FIJO"
       src="https://app.powerbi.com/view?r=eyJrIjoiZGI1ZTIyZWQtMWM3NS00NWRhLWFlODktZWNkNWViNDZhZjBkIiwidCI6IjBkNzVmMjFlLWM5OGEtNDg4Ni04NjYwLWYwZDU3YmNjZmY0ZCJ9&embedImagePlaceholder=true&pageName=67c237e0b4b10004828d"
-      allowfullscreen
-      loading="lazy"
-      ></iframe>
+      allowfullscreen loading="lazy"></iframe>
   </section>
 
-<script>
-  const btn = document.getElementById('enter-btn');
-  const welcome = document.getElementById('welcome');
-  const report = document.getElementById('report-container');
-  const loader = document.getElementById('loader');
+  <script>
+    const btn = document.getElementById('enter-btn');
+    const welcome = document.getElementById('welcome');
+    const report = document.getElementById('report-container');
+    const loader = document.getElementById('loader');
 
-  btn.addEventListener('click', () => {
-    // Mostrar loader
-    loader.style.display = 'block';
+    btn.addEventListener('click', () => {
+      loader.classList.remove('hidden');
+      welcome.style.animation = 'fadeOut 1.5s ease forwards';
 
-    // Animar salida bienvenida
-    welcome.style.animation = 'fadeOut 1.5s ease forwards';
+      setTimeout(() => {
+        welcome.style.display = 'none';
+        report.style.display = 'block';
+        report.style.animation = 'fadeInReport 2s ease forwards';
 
-    // Esperar fadeOut y mostrar loader 1.5s
-    setTimeout(() => {
-      welcome.style.display = 'none';
-      // Mostrar iframe con fadeIn y loader oculto tras 1.2s
-      report.style.display = 'block';
-      report.style.animation = 'fadeInReport 2s ease forwards';
-
-      // Ocultar loader tras cargar iframe con delay para suavizar
-      setTimeout(() => loader.style.display = 'none', 1500);
-    }, 1600);
-  });
-</script>
-
+        setTimeout(() => {
+          loader.classList.add('hidden');
+        }, 1200);
+      }, 1600);
+    });
+  </script>
 </body>
+
 </html>
