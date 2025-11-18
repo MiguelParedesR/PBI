@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  button,
+  input:where([type='button']),
+  input:where([type='reset']),
+  input:where([type='submit']) {
+    appearance: button;
+  }
+
+  [type='search'] {
+    appearance: textfield;
+  }
+
+  progress {
+    display: inline-block;
+  }
+}
+
