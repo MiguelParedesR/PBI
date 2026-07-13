@@ -1,64 +1,369 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TPP | Dashboard de Presupuestos & Seguridad</title>
+  <meta name="theme-color" content="#ef6a3a" />
+  <title>TPP | Gestión Ejecutiva de Robos de Cable Reefer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="tailwind.css" />
+
   <style>
-    ::selection {
-      background: #fff;
-      color: #f05a1f;
+    :root {
+      --tpp-orange: #ef6a3a;
+      --tpp-orange-dark: #d85223;
+      --navy: #172033;
+      --navy-soft: #23354d;
+      --text: #1d2735;
+      --muted: #667085;
+      --line: #e5e7eb;
+      --surface: #ffffff;
+      --page: #f4f6f8;
     }
 
-    #welcome {
-      animation: fadeIn 2s ease forwards;
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: "Open Sans", sans-serif;
+      color: var(--text);
+      background: var(--page);
+      overflow: hidden;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app-shell {
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background:
+        linear-gradient(115deg, rgba(239, 106, 58, .06), transparent 42%),
+        var(--page);
+    }
+
+    .welcome-card {
+      width: min(1180px, 100%);
+      min-height: 680px;
+      display: grid;
+      grid-template-columns: 0.95fr 1.25fr;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--surface);
+      box-shadow: 0 24px 70px rgba(23, 32, 51, .14);
+      animation: enter .7s ease both;
+    }
+
+    .brand-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 50px;
+      color: #fff;
+      background:
+        linear-gradient(150deg, rgba(255, 255, 255, .10), transparent 42%),
+        linear-gradient(135deg, var(--tpp-orange), var(--tpp-orange-dark));
+    }
+
+    .brand-panel::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -90px;
+      width: 260px;
+      height: 260px;
+      border: 50px solid rgba(255, 255, 255, .08);
+      border-radius: 50%;
+    }
+
+    .logo {
+      width: 230px;
+      height: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+    }
+
+    .brand-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 440px;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .78);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Montserrat", sans-serif;
+      font-size: clamp(34px, 4vw, 58px);
+      line-height: 1.05;
+      letter-spacing: -.035em;
+    }
+
+    .brand-copy p:last-child {
+      margin: 24px 0 0;
+      max-width: 390px;
+      font-size: 17px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, .86);
+    }
+
+    .brand-foot {
+      position: relative;
+      z-index: 1;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .70);
+    }
+
+    .content-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 54px 58px;
+    }
+
+    .content-panel h2 {
+      margin: 0;
+      font-family: "Montserrat", sans-serif;
+      font-size: 29px;
+      line-height: 1.25;
+      color: var(--navy);
+    }
+
+    .lead {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .scope-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 34px 0 32px;
+    }
+
+    .scope-item {
+      display: flex;
+      align-items: center;
+      min-height: 82px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfcfd;
+    }
+
+    .scope-icon {
+      flex: 0 0 42px;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-right: 13px;
+      border-radius: 13px;
+      color: var(--tpp-orange);
+      background: #fff0e9;
+    }
+
+    .scope-icon svg {
+      width: 23px;
+      height: 23px;
+    }
+
+    .scope-item span:last-child {
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .enter-button {
+      width: 100%;
+      min-height: 58px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 0;
+      border-radius: 14px;
+      background: var(--navy);
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .enter-button:hover {
+      transform: translateY(-2px);
+      background: var(--navy-soft);
+      box-shadow: 0 14px 30px rgba(23, 32, 51, .18);
+    }
+
+    .enter-button:focus-visible {
+      outline: 3px solid rgba(239, 106, 58, .55);
+      outline-offset: 4px;
+    }
+
+    .notice {
+      margin: 18px 0 0;
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      place-items: center;
+      background: rgba(12, 19, 31, .88);
+      color: white;
+      text-align: center;
+    }
+
+    #loader.visible {
+      display: grid;
+    }
+
+    .loader-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .spinner {
+      width: 64px;
+      height: 64px;
+      border: 4px solid rgba(255, 255, 255, .18);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .loader-title {
+      margin: 0;
+      font-family: "Montserrat", sans-serif;
+      font-size: 22px;
+    }
+
+    .loader-subtitle {
+      margin: 0;
+      color: rgba(255, 255, 255, .70);
+      font-size: 13px;
     }
 
     #report-container {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
       display: none;
-      width: 100%;
-      height: 100vh;
-      animation: fadeInReport 2s ease forwards;
+      background: #eef1f4;
     }
 
-    #report-container iframe {
+    #report-container.visible {
+      display: block;
+      animation: reportIn .6s ease both;
+    }
+
+    #report-frame {
       width: 100%;
       height: 100%;
-      border: none;
+      border: 0;
+      background: #eef1f4;
     }
 
-    @keyframes fadeIn {
+    .report-toolbar {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 12;
+      display: flex;
+      gap: 10px;
+    }
+
+    .toolbar-button {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255, 255, 255, .22);
+      border-radius: 12px;
+      background: rgba(23, 32, 51, .92);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .16);
+    }
+
+    .toolbar-button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .config-error {
+      display: none;
+      margin: 16px 0 0;
+      padding: 12px 14px;
+      border: 1px solid #f6c7b3;
+      border-radius: 12px;
+      background: #fff3ed;
+      color: #9a3412;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .config-error.visible {
+      display: block;
+    }
+
+    @keyframes enter {
       from {
         opacity: 0;
-        transform: scale(0.97);
+        transform: translateY(12px) scale(.99);
       }
 
       to {
         opacity: 1;
-        transform: scale(1);
+        transform: translateY(0) scale(1);
       }
     }
 
-    @keyframes fadeOut {
-      from {
-        opacity: 1;
-      }
-
-      to {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-    }
-
-    @keyframes fadeInReport {
+    @keyframes reportIn {
       from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(12px);
       }
 
       to {
@@ -66,98 +371,218 @@
         transform: translateY(0);
       }
     }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 860px) {
+      body {
+        overflow: auto;
+      }
+
+      .app-shell {
+        padding: 0;
+      }
+
+      .welcome-card {
+        min-height: 100dvh;
+        grid-template-columns: 1fr;
+        border: 0;
+        border-radius: 0;
+      }
+
+      .brand-panel {
+        min-height: 310px;
+        padding: 34px 28px;
+      }
+
+      .logo {
+        width: 175px;
+      }
+
+      .content-panel {
+        padding: 36px 26px 44px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .scope-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-copy p:last-child {
+        font-size: 15px;
+      }
+    }
   </style>
 </head>
 
-<body class="relative min-h-screen overflow-hidden bg-gradient-to-br from-tpp to-tppDark text-white font-sans">
-  <div class="pointer-events-none absolute inset-0 -z-10">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.2),_transparent_65%)]"></div>
-    <div class="absolute -top-40 -left-24 h-[22rem] w-[22rem] rounded-full bg-white/20 blur-[120px]"></div>
-    <div class="absolute bottom-0 right-0 h-[28rem] w-[28rem] rounded-full bg-white/10 blur-[150px]"></div>
+<body>
+  <div id="welcome" class="app-shell">
+    <section class="welcome-card" aria-labelledby="page-title">
+      <aside class="brand-panel">
+        <img src="https://operatividad.tpp.com.pe/servicios/assetsBP/images/TPP-Logo-Oficial-transparente.png"
+          alt="Terminales Portuarios Peruanos" class="logo">
+
+        <div class="brand-copy">
+          <p class="eyebrow">Centro de Control · Power BI</p>
+          <h1 id="page-title">Gestión Ejecutiva de Robos de Cable Reefer</h1>
+          <p>
+            Visión consolidada para la toma de decisiones sobre incidencias,
+            puntos críticos, acciones preventivas e impacto económico.
+          </p>
+        </div>
+
+        <div class="brand-foot">
+          Terminales Portuarios Peruanos · Uso ejecutivo temporal
+        </div>
+      </aside>
+
+      <div class="content-panel">
+        <h2>Dashboard ejecutivo</h2>
+        <p class="lead">
+          Acceda a la presentación interactiva preparada para Gerencia.
+        </p>
+
+        <div class="scope-grid">
+          <div class="scope-item">
+            <span class="scope-icon" aria-hidden="true">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M4 19V9m5 10V5m5 14v-7m5 7V3" stroke-linecap="round" />
+              </svg>
+            </span>
+            <span>Resumen ejecutivo</span>
+          </div>
+
+          <div class="scope-item">
+            <span class="scope-icon" aria-hidden="true">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" />
+                <circle cx="12" cy="10" r="2" />
+              </svg>
+            </span>
+            <span>Mapa y riesgo</span>
+          </div>
+
+          <div class="scope-item">
+            <span class="scope-icon" aria-hidden="true">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M9 12l2 2 4-4" />
+                <path d="M5 4h14v16H5z" />
+              </svg>
+            </span>
+            <span>Prevención y seguimiento</span>
+          </div>
+
+          <div class="scope-item">
+            <span class="scope-icon" aria-hidden="true">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M4 7h3l2-2h6l2 2h3v12H4z" />
+                <circle cx="12" cy="13" r="3" />
+              </svg>
+            </span>
+            <span>Evidencia e impacto</span>
+          </div>
+        </div>
+
+        <button id="enter-btn" class="enter-button" type="button">
+          <span>Ingresar al dashboard</span>
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+            aria-hidden="true">
+            <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <div id="config-error" class="config-error" role="alert">
+          Falta configurar el vínculo público de Power BI en la constante
+          <strong>PUBLIC_POWER_BI_URL</strong> del archivo.
+        </div>
+
+        <p class="notice">
+          Esta publicación debe retirarse después de la presentación desde
+          Power BI &gt; Configuración &gt; Administrar códigos para insertar.
+        </p>
+      </div>
+    </section>
   </div>
 
-  <div id="loader" role="alert" aria-live="assertive" aria-label="Cargando informe"
-    class="fixed inset-0 z-20 hidden place-items-center bg-slate-950/80 px-6 text-center">
-    <div class="flex flex-col items-center gap-4">
-      <div class="relative h-20 w-20">
-        <span class="absolute inset-0 rounded-full border-4 border-white/20"></span>
-        <span class="absolute inset-0 rounded-full border-4 border-transparent border-t-white animate-spin"></span>
-      </div>
-      <p class="font-display text-2xl">Cargando informe</p>
-      <p class="text-sm text-white/70">Conectando con Power BI...</p>
+  <div id="loader" aria-live="polite" aria-label="Cargando dashboard">
+    <div class="loader-box">
+      <div class="spinner" aria-hidden="true"></div>
+      <p class="loader-title">Cargando dashboard</p>
+      <p class="loader-subtitle">Conectando con Power BI...</p>
     </div>
   </div>
 
-  <section id="welcome" role="main"
-    class="relative z-10 flex min-h-screen flex-col items-center justify-center gap-8 px-6 text-center">
-    <img src="https://operatividad.tpp.com.pe/servicios/assetsBP/images/TPP-Logo-Oficial-transparente.png"
-      alt="TPP Logo" class="h-32 w-auto animate-softPulse" />
-    <div class="space-y-3">
-      <p class="text-sm uppercase tracking-[0.4em] text-white/70">Power BI</p>
-      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl animate-glow">Presupuestos y Seguridad</h1>
-      <h2 class="text-base text-white/80 sm:text-lg">An&aacute;lisis de gastos, actividades, actos y condiciones</h2>
+  <section id="report-container" aria-label="Dashboard Power BI">
+    <iframe id="report-frame" title="TPP | Gestión Ejecutiva de Robos de Cable Reefer" src="about:blank"
+      allow="fullscreen" allowfullscreen>
+    </iframe>
+
+    <div class="report-toolbar">
+      <button id="fullscreen-btn" class="toolbar-button" type="button" title="Pantalla completa"
+        aria-label="Pantalla completa">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H3v5M16 3h5v5M8 21H3v-5m18 0v5h-5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
     </div>
-
-    <button id="enter-btn" aria-label="Ingresar al informe" title="Ingresar al informe"
-      class="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-white/60 px-12 py-4 font-display text-lg uppercase tracking-wide text-white transition hover:scale-[1.02]">
-      <span class="absolute inset-0 bg-white/15 transition group-hover:bg-white/25"></span>
-      <span class="relative">Ingresar al Informe</span>
-      <svg class="relative ml-3 h-5 w-5 transition group-hover:translate-x-1" fill="none" stroke="currentColor"
-        stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
-      </svg>
-    </button>
-
-    <div class="icons-row mt-4 flex flex-wrap justify-center gap-4 sm:gap-6">
-      <div class="max-w-[160px] rounded-3xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur">
-        <img src="https://img.icons8.com/ios-filled/100/ffffff/money-bag.png" alt="Icono dinero y presupuestos"
-          class="mx-auto mb-3 h-12 w-12" />
-        <p class="text-sm font-semibold leading-tight">Presupuestos &amp; Gastos</p>
-      </div>
-      <div class="max-w-[160px] rounded-3xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur">
-        <img src="https://img.icons8.com/ios-filled/100/ffffff/security-checked.png" alt="Icono seguridad"
-          class="mx-auto mb-3 h-12 w-12" />
-        <p class="text-sm font-semibold leading-tight">Incidencias de Seguridad</p>
-      </div>
-      <div class="max-w-[160px] rounded-3xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur">
-        <img src="https://img.icons8.com/ios-filled/100/ffffff/factory.png" alt="Icono f&aacute;brica y condiciones"
-          class="mx-auto mb-3 h-12 w-12" />
-        <p class="text-sm font-semibold leading-tight">Condiciones en Instalaciones</p>
-      </div>
-      <div class="max-w-[160px] rounded-3xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur">
-        <img src="https://img.icons8.com/ios-filled/100/ffffff/security-checked.png" alt="Icono robo"
-          class="mx-auto mb-3 h-12 w-12" />
-        <p class="text-sm font-semibold leading-tight">Robos e Intentos de robos</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Informe Power BI -->
-  <section id="report-container" aria-label="Informe Power BI">
-    <iframe title="PB FIJO"
-      src="https://app.powerbi.com/reportEmbed?reportId=ebb632d3-e02b-40d7-a56b-63311c7138bb&autoAuth=true&ctid=0d75f21e-c98a-4886-8660-f0d57bccff4d&actionBarEnabled=true"
-      allowfullscreen loading="lazy"></iframe>
   </section>
 
   <script>
-    const btn = document.getElementById('enter-btn');
-    const welcome = document.getElementById('welcome');
-    const report = document.getElementById('report-container');
-    const loader = document.getElementById('loader');
+    <iframe title="TPP_Robos_Reefer_BASE_28_v1" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=ebb632d3-e02b-40d7-a56b-63311c7138bb&autoAuth=true&ctid=0d75f21e-c98a-4886-8660-f0d57bccff4d&actionBarEnabled=true" frameborder="0" allowFullScreen="true"></iframe>
+    const PUBLIC_POWER_BI_URL = "PEGAR_AQUI_EL_VINCULO_PUBLICO_DE_POWER_BI";
 
-    btn.addEventListener('click', () => {
-      loader.classList.remove('hidden');
-      welcome.style.animation = 'fadeOut 1.5s ease forwards';
+    const enterButton = document.getElementById("enter-btn");
+    const welcome = document.getElementById("welcome");
+    const loader = document.getElementById("loader");
+    const reportContainer = document.getElementById("report-container");
+    const reportFrame = document.getElementById("report-frame");
+    const fullscreenButton = document.getElementById("fullscreen-btn");
+    const configError = document.getElementById("config-error");
 
-      setTimeout(() => {
-        welcome.style.display = 'none';
-        report.style.display = 'block';
-        report.style.animation = 'fadeInReport 2s ease forwards';
+    const isConfigured =
+      PUBLIC_POWER_BI_URL.startsWith("https://app.powerbi.com/view?") ||
+      PUBLIC_POWER_BI_URL.includes("app.powerbi.com/view?r=");
 
-        setTimeout(() => {
-          loader.classList.add('hidden');
-        }, 1200);
-      }, 1600);
+    enterButton.addEventListener("click", () => {
+      if (!isConfigured) {
+        configError.classList.add("visible");
+        return;
+      }
+
+      loader.classList.add("visible");
+      reportFrame.src = PUBLIC_POWER_BI_URL;
+
+      window.setTimeout(() => {
+        welcome.style.display = "none";
+        reportContainer.classList.add("visible");
+      }, 350);
+    });
+
+    reportFrame.addEventListener("load", () => {
+      if (reportFrame.src !== "about:blank") {
+        loader.classList.remove("visible");
+      }
+    });
+
+    window.setTimeout(() => {
+      loader.classList.remove("visible");
+    }, 10000);
+
+    fullscreenButton.addEventListener("click", async () => {
+      try {
+        if (!document.fullscreenElement) {
+          await reportContainer.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      } catch (error) {
+        console.error("No fue posible activar pantalla completa:", error);
+      }
     });
   </script>
 </body>
